@@ -112,10 +112,10 @@ if response.status_code == 200:
                     break
                 
                 elif currency2 in rates.keys():
-                    print(f'---------- {price} {pay_currency} ----------')
+                    print(f'\n---------- {price} {pay_currency} ----------')
                     convert_price = convert(price_in_eur, currency2, rates)
                     print(f'  Watch price: {convert_price:.2f} {currency2}')
-                    print('-----------------------------')
+                    print('---------------------------------')
                 else:
                     print('\n--- Currency not supported ---\n')
 
