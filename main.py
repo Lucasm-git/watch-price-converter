@@ -90,24 +90,26 @@ if response.status_code == 200:
             continue
         
         if price > 0:
-            # To be able to quit at every questions
-            if pay_currency == 'quit':
-                break
             # Add currency of the payment
             pay_currency = input(prompt2)
             pay_currency = pay_currency.upper()
+            # To be able to quit at every questions
+            if pay_currency == 'QUIT':
+                break
+            
+
 
             elif pay_currency in rates.keys():
                 # find pay_currency rate and transforme price paid in EUR 
                 rate_pay = rates[pay_currency]
                 price_in_eur = price / rate_pay
 
-                # To be able to quit at every questions
-                if currency2 == 'quit':
-                    break
                 # Choose currency for the output
                 currency2 = input(prompt3) 
                 currency2 = currency2.upper()
+                # To be able to quit at every questions
+                if currency2 == 'QUIT':
+                    break
                 
                 elif currency2 in rates.keys():
                     print(f'---------- {price} {pay_currency} ----------')
