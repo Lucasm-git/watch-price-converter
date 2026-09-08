@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 import requests 
+import time
 
 load_dotenv()
 cle = os.getenv("ALPHA_VANTAGE_KEY")
@@ -18,24 +19,18 @@ except requests.exceptions.RequestException:
 try:
     url_lvmh = f"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=MC.PA&apikey={cle}"
     url_kering = f"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=KER.PA&apikey={cle}"
+
     response_lvmh_market= requests.get(url_lvmh)
+    time.sleep(2)
     response_ker_market = requests.get(url_kering)
     data_lvmh = response_lvmh_market.json()
     data_ker = response_ker_market.json()
 
-except requests.exceptions.RequestException:
-    print('\n=== Market datas not available ===\n')
-    exit()
 
-# if server available, run converter
-if response.status_code == 200:
-
-    print('\n================================')
-    print('Share prices today:')
-
-    if "Global Quote" not in data_lvmh or "Global Quote" not in data_ker:
-        print("\nMarket datas not available (quota reached or unknown symbol)\n")
-    else:
+    if 'Global Quote' in data_lvmh and 'Global Quote' in data_ker:
+        print('================================')
+        print('Share prices today:\n')
+        
         # extract LVMH market value from data
         lvmh_symbol = data_lvmh["Global Quote"]
         lvmh_today_price = lvmh_symbol["05. price"]
@@ -46,8 +41,16 @@ if response.status_code == 200:
         ker_symbol = data_ker["Global Quote"]
         ker_today_price = ker_symbol["05. price"]
         float_ker_price = float(ker_today_price)
-        print(f'\tKER : {float_ker_price:.2f} EUR')
+        print(f'\tKER  : {float_ker_price:.2f} EUR')
+    else:
+        print('\n=== Market datas not available ===\n')
 
+except requests.exceptions.RequestException:
+    print('\n=== Market datas not available ===\n')
+    exit()
+
+# if server available, run converter
+if response.status_code == 200:
 
     # extract rates from dictionary data_rates extract form api.frakfurter
     rates = data_rates['rates']
